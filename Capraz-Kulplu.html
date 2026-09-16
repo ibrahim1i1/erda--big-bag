@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Çapraz Kulplu Big Bag | ERDAŞ Big Bag</title>
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="standart-4-kulplu-torba.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ================= Root Variables & Reset ================= */
+    :root {
+      --primary-blue: #0284c7;
+      --primary-dark: #0369a1;
+      --dark-navy: #060b18;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --bg-gray: #f8fafc;
+      --white: #ffffff;
+      --success-green: #16a34a;
+      --error-red: #dc2626;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--white);
+      color: var(--text-dark);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1420px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ================= Toast Notification Popup ================= */
+    .toast-popup {
+      position: fixed;
+      top: 25px;
+      left: 50%;
+      transform: translate(-50%, -40px) scale(0.92);
+      background: #ffffff;
+      min-width: 320px;
+      max-width: 480px;
+      width: 90%;
+      padding: 16px 20px 18px;
+      border-radius: 14px;
+      box-shadow: 0 20px 45px -10px rgba(6, 11, 24, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      z-index: 99999;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      overflow: hidden;
+    }
+
+    .toast-popup.show {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translate(-50%, 0) scale(1);
+    }
+
+    .toast-icon-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .toast-popup.success .toast-icon-wrap {
+      background-color: #dcfce7;
+      color: var(--success-green);
+    }
+    .toast-popup.success { border-left: 4px solid var(--success-green); }
+
+    .toast-popup.error .toast-icon-wrap {
+      background-color: #fee2e2;
+      color: var(--error-red);
+    }
+    .toast-popup.error { border-left: 4px solid var(--error-red); }
+
+    .toast-text { flex: 1; }
+    .toast-text h4 { font-size: 16px; font-weight: 700; color: var(--dark-navy); margin-bottom: 2px; }
+    .toast-text p { font-size: 14px; color: var(--text-muted); line-height: 1.45; }
+
+    .toast-close-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0 4px;
+    }
+
+    .toast-progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      width: 100%;
+      background-color: #e2e8f0;
+    }
+
+    .toast-progress-bar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    .toast-popup.success .toast-progress-bar::before { background-color: var(--success-green); }
+    .toast-popup.error .toast-progress-bar::before { background-color: var(--error-red); }
+    .toast-popup.show .toast-progress-bar::before { animation: progressCountdown 5s linear forwards; }
+
+    @keyframes progressCountdown {
+      from { width: 100%; }
+      to { width: 0%; }
+    }
+
+    /* ================= Top Bar ================= */
+    .top-bar {
+      background-color: var(--dark-navy);
+      color: #cbd5e1;
+      padding: 15px 0;
+      font-size: 13.5px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .top-bar-content { display: flex; justify-content: space-between; align-items: center; }
+    .top-info { display: flex; align-items: center; gap: 18px; }
+    .top-info i { color: var(--primary-blue); margin-right: 4px; }
+
+    .lang-switch { display: flex; align-items: center; gap: 6px; }
+    .lang-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 2px 4px;
+      transition: color 0.2s;
+    }
+    .lang-btn.active, .lang-btn:hover { color: #ffffff; font-weight: 800; }
+
+    /* ================= Main Navigation ================= */
+    .main-header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .nav-content { height: 92px; display: flex; justify-content: space-between; align-items: center; }
+    .brand-logo img { height: 70px; width: auto; max-width: 300px; object-fit: contain; }
+
+    .nav-links { list-style: none; display: flex; align-items: center; gap: 30px; }
+    .nav-links a {
+      color: var(--text-dark);
+      font-weight: 600;
+      font-size: 17px;
+      transition: all 0.3s ease;
+      padding: 10px;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--primary-blue); border-bottom: solid 3px var(--primary-blue); }
+
+    .dropdown-item { position: relative; }
+    .dropdown-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      font-size: 17px;
+      color: var(--text-dark);
+      cursor: pointer;
+      padding: 10px;
+      transition: all 0.3s ease;
+    }
+    .dropdown-item.active .dropdown-toggle, .dropdown-toggle:hover {
+      color: var(--primary-blue);
+      border-bottom: solid 3px var(--primary-blue);
+    }
+
+    .arrow-icon { font-size: 12px; transition: transform 0.25s ease; }
+
+    .submenu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 250px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+      padding: 8px 0;
+      list-style: none;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.25s ease;
+      z-index: 200;
+    }
+
+    .submenu li a {
+      display: block;
+      padding: 10px 20px;
+      font-size: 15px;
+      color: var(--text-dark);
+      border-bottom: none !important;
+    }
+    .submenu li a:hover, .submenu li a.active-sub {
+      background: #f0f9ff;
+      color: var(--primary-blue);
+      padding-left: 24px;
+      border-bottom: none !important;
+    }
+
+    .dropdown-item:hover .submenu { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown-item:hover .arrow-icon { transform: rotate(180deg); }
+
+    .nav-btn {
+      background: var(--dark-navy) !important;
+      color: #ffffff !important;
+      padding: 10px 22px !important;
+      border-radius: 8px;
+      font-weight: 700 !important;
+      border-bottom: none !important;
+      transition: all 0.3s ease;
+    }
+    .nav-btn:hover { background: var(--primary-blue) !important; transform: translateY(-2px); border-bottom: none !important; }
+
+    .menu-btn {
+      display: none;
+      width: 32px;
+      height: 24px;
+      position: relative;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 1002;
+    }
+
+    .menu-btn span {
+      display: block;
+      width: 100%;
+      height: 3px;
+      background-color: var(--dark-navy);
+      position: absolute;
+      left: 0;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .menu-btn span:nth-child(1) { top: 0; }
+    .menu-btn span:nth-child(2) { top: 10px; }
+    .menu-btn span:nth-child(3) { top: 20px; }
+    .menu-btn.open span:nth-child(1) { top: 10px; transform: rotate(45deg); }
+    .menu-btn.open span:nth-child(2) { opacity: 0; }
+    .menu-btn.open span:nth-child(3) { top: 10px; transform: rotate(-45deg); }
+
+    /* ================= Product Detail Section ================= */
+    .product-detail-section {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+      min-height: auto;
+    }
+
+    .product-top-header { margin-bottom: 25px; }
+    .product-main-title { font-size: 32px; font-weight: 800; color: #0f172a; }
+
+    .product-grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .product-media-wrapper {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+    }
+    .product-media-wrapper img { width: 100%; max-height: 480px; object-fit: contain; }
+
+    .product-specs-list { display: flex; flex-direction: column; gap: 16px; }
+
+    .spec-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .spec-card.highlight { background: #f0fdf4; border-color: #bbf7d0; }
+
+    .spec-icon {
+      background: #f1f5f9;
+      color: #0284c7;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .spec-card.highlight .spec-icon { background: #dcfce7; color: #16a34a; }
+
+    .spec-body h3 { font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+    .spec-body p { font-size: 14px; color: #475569; line-height: 1.5; margin: 0; }
+    .spec-note { font-size: 12px; color: #64748b; margin-left: 6px; }
+    .spec-features-list { margin: 6px 0 0 18px; padding: 0; color: #475569; font-size: 14px; }
+    .spec-features-list li { margin-bottom: 4px; }
+
+    .product-quick-actions { display: flex; gap: 14px; margin-top: 10px; flex-wrap: wrap; }
+    .spec-action-btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .spec-action-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+    .wa-btn { background: #25d366; color: #ffffff !important; }
+    .call-btn { background: #0284c7; color: #ffffff !important; }
+
+    /* ================= In-Page Contact & Quote Form ================= */
+    .contact-page-section { padding: 40px 0 60px; border-top: 1px solid var(--border-color); }
+    .contact-main-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.3fr;
+      gap: 50px;
+      align-items: start;
+      min-height: auto;
+    }
+
+    .contact-info-block { display: flex; flex-direction: column; gap: 24px; padding-top: 6px; }
+    .info-row { display: flex; align-items: flex-start; gap: 15px; }
+    .info-row i { font-size: 19px; color: var(--primary-blue); margin-top: 3px; flex-shrink: 0; }
+    .info-text strong { display: block; font-size: 15px; color: var(--dark-navy); margin-bottom: 3px; font-weight: 700; }
+    .info-text p, .info-text a { font-size: 14.5px; color: var(--text-muted); line-height: 1.6; }
+    .info-text a:hover { color: var(--primary-blue); }
+
+    .contact-form-box { display: flex; flex-direction: column; gap: 16px; }
+    .form-two-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-field {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 14.5px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 8px;
+      background-color: var(--bg-gray);
+      color: var(--text-dark);
+      outline: none;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    .form-field:focus {
+      background-color: #ffffff;
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+    }
+    .form-field::placeholder { color: #94a3b8; }
+    textarea.form-field { resize: vertical; min-height: 125px; }
+    .form-submit-row { display: flex; justify-content: flex-end; margin-top: 4px; }
+
+    .btn-send-message {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 12px 42px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-send-message:hover { background-color: var(--primary-dark); transform: translateY(-1px); }
+    .btn-send-message:disabled { opacity: 0.65; cursor: not-allowed; }
+
+    /* ================= Footer ================= */
+    .main-footer {
+      background: var(--dark-navy);
+      color: #94a3b8;
+      padding: 45px 0 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: auto;
+    }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 35px; margin-bottom: 30px; }
+    .footer-logo { height: 42px; width: auto; margin-bottom: 12px; }
+    .footer-links h4, .footer-info h4 { color: #ffffff; font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+    .footer-links ul { list-style: none; }
+    .footer-links li { margin-bottom: 8px; }
+    .footer-links a { color: #cbd5e1; font-size: 14px; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--primary-blue); }
+    .footer-bottom { text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 18px; font-size: 13.5px; }
+
+    /* ================= Responsive Queries ================= */
+    @media (max-width: 992px) {
+      .menu-btn { display: block; }
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: #ffffff;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 90px 24px 30px;
+        gap: 12px;
+        box-shadow: -8px 0 24px rgba(0, 0, 0, 0.12);
+        transition: right 0.3s ease-in-out;
+        z-index: 999;
+        overflow-y: auto;
+      }
+      .nav-links.active { right: 0; }
+      .nav-links li { width: 100%; }
+      .nav-links a { display: block; width: 100%; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
+      .nav-btn { display: block; text-align: center; width: 100%; margin-top: 10px; }
+      .submenu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        border: none;
+        padding-left: 15px;
+        display: none;
+      }
+      .dropdown-item.open .submenu, .dropdown-item.active .submenu { display: block; }
+      .product-grid-container { grid-template-columns: 1fr; gap: 30px; }
+      .contact-main-grid { grid-template-columns: 1fr; gap: 35px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+    }
+
+    @media (max-width: 768px) {
+      .top-bar { padding: 10px 0; }
+      .top-bar-content { flex-direction: row; }
+      .form-two-cols { grid-template-columns: 1fr; gap: 16px; }
+      .form-submit-row { justify-content: stretch; }
+      .btn-send-message { width: 100%; }
+      .footer-grid { grid-template-columns: 1fr; gap: 25px; }
+    }
+
+    @media (max-width: 580px) {
+      .nav-content { height: 75px; }
+      .brand-logo img { height: 48px; }
+      .product-main-title { font-size: 24px; }
+      .product-media-wrapper { padding: 15px; }
+      .product-media-wrapper img { max-height: 300px; }
+      .spec-card { padding: 14px 16px; gap: 12px; }
+      .product-quick-actions { flex-direction: column; }
+      .spec-action-btn { width: 100%; justify-content: center; }
+      .toast-popup { min-width: 290px; padding: 12px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Toast Notification -->
+  <div id="toastNotification" class="toast-popup" role="alert">
+    <div class="toast-icon-wrap">
+      <i id="toastIcon" class="fa-solid fa-check"></i>
+    </div>
+    <div class="toast-text">
+      <h4 id="toastTitle">Başarılı!</h4>
+      <p id="toastMessage">Mesajınız başarıyla iletildi.</p>
+    </div>
+    <button type="button" class="toast-close-btn" id="toastCloseBtn" aria-label="Kapat">&times;</button>
+    <div class="toast-progress-bar"></div>
+  </div>
+
+  <!-- 1. Top Bar -->
+  <aside class="top-bar">
+    <div class="container top-bar-content">
+      <div class="top-info">
+        <span class="badge"><i class="fa-solid fa-envelope"></i><a href="mailto:info@erdasgrup.com">info@erdasgrup.com</a></span>
+      </div>
+      <div class="lang-switch">
+        <button class="lang-btn active" id="btn-tr" onclick="setLanguage('tr')">TR</button>
+        <span>|</span>
+        <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 2. Main Navigation Header -->
+  <header class="main-header">
+    <div class="container nav-content">
+      <a href="index.html" class="brand-logo">
+        <img src="images/logo.png" alt="ERDAŞ Logo" onerror="this.src='https://via.placeholder.com/220x60/060b18/ffffff?text=ERDAS+LOGO'" />
+      </a>
+
+      <!-- Mobile Navigation Hamburger -->
+      <button class="menu-btn" id="menuBtn" aria-label="Menü">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- Navigation Links -->
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" data-tr="Ana Sayfa" data-en="Home">Ana Sayfa</a></li>
+        <li><a href="hakkimizda.html" data-tr="Hakkımızda" data-en="About Us">Hakkımızda</a></li>
+        
+        <!-- Dropdown Menu Item -->
+        <li class="dropdown-item active">
+          <div class="dropdown-toggle">
+            <span data-tr="Ürünlerimiz" data-en="Products">Ürünlerimiz</span>
+            <i class="fa-solid fa-chevron-down arrow-icon"></i>
+          </div>
+          <ul class="submenu">
+            <li><a href="standart-4-kulplu-torba.html" data-tr="Standart 4 Kulplu Torba" data-en="Standard 4-Loop Bag">Standart 4 Kulplu Torba</a></li>
+            <li><a href="q-bag.html" data-tr="Q-Bag Torba" data-en="Q-Bag (Baffle Bag)">Q-Bag Torba</a></li>
+            <li><a href="Ic-Naylonlu.html" data-tr="İç Naylonlu Big Bag" data-en="Liner Big Bag">İç Naylonlu Big Bag</a></li>
+            <li><a href="Capraz-Kulplu.html" class="active-sub" data-tr="Çapraz Kulplu Big Bag" data-en="Cross-Corner Bag">Çapraz Kulplu Big Bag</a></li>
+            <li><a href="index.html#torba-tipleri" data-tr="Tüm Ürünleri Gör" data-en="View All Products">Tüm Ürünleri Gör</a></li>
+          </ul>
+        </li>
+
+        <li><a href="iletisim.html" data-tr="İletişim" data-en="Contact">İletişim</a></li>
+        <li><a href="iletisim.html" class="nav-btn" data-tr="Fiyat Teklifi Al" data-en="Get a Quote">Fiyat Teklifi Al</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- 3. Product Details & Technical Specs Section -->
+  <section class="product-detail-section">
+    <div class="product-top-header">
+      <h1 class="product-main-title" data-tr="Çapraz Kulplu (Cross Corner) Big Bag" data-en="Cross-Corner Big Bag">Çapraz Kulplu Big Bag</h1>
+    </div>
+
+    <div class="product-grid-container">
+      <!-- Media Showcase -->
+      <div class="product-media-wrapper">
+        <img src="images/çapraz-kuplu-big-bag.png" alt="Çapraz Kulplu Big Bag" onerror="this.src='https://placehold.co/600x550?text=Çapraz+Kulplu+Big+Bag'" />
+      </div>
+
+      <!-- Specs Cards -->
+      <div class="product-specs-list">
+        <div class="spec-card">
+          <div class="spec-icon"><i class="fa-solid fa-cube"></i></div>
+          <div class="spec-body">
+            <h3 data-tr="Ürün Nedir?" data-en="What is the Product?">Ürün Nedir?</h3>
+            <p data-tr="Kaldırma kolonları gövde köşelerine çapraz monte edilen ve dairesel (tubüler) kumaştan üretilen; yan dikişsiz gövdesiyle ekstra yırtılma direnci sunan ağır hizmet torbasıdır." data-en="A heavy-duty bag manufactured from circular (tubular) fabric with lifting loops cross-stitched to the body corners, offering extra tear resistance thanks to its seamless side body.">
+              Kaldırma kolonları gövde köşelerine çapraz monte edilen ve dairesel (tubüler) kumaştan üretilen; yan dikişsiz gövdesiyle ekstra yırtılma direnci sunan ağır hizmet torbasıdır.
+            </p>
+          </div>
+        </div>
+
+        <div class="spec-card highlight">
+          <div class="spec-icon"><i class="fa-solid fa-weight-hanging"></i></div>
+          <div class="spec-body">
+            <h3 data-tr="Taşıma Kapasitesi (SWL)" data-en="Load Capacity (SWL)">Taşıma Kapasitesi (SWL)</h3>
+            <p>
+              <strong data-tr="1000 kg - 2000 kg" data-en="1000 kg - 2000 kg">1000 kg - 2000 kg</strong>
+              <span class="spec-note" data-tr="(Ağır sanayi şartlarına uygun özel üretim)" data-en="(Custom production suitable for heavy industrial conditions)">(Ağır sanayi şartlarına uygun özel üretim)</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="spec-card">
+          <div class="spec-icon"><i class="fa-solid fa-industry"></i></div>
+          <div class="spec-body">
+            <h3 data-tr="Kullanım Alanları" data-en="Applications">Kullanım Alanları</h3>
+            <p data-tr="Maden cevherleri, metal tozları, ferroalyaj, refrakter malzemeler, gübre, taş/kum ocakları ve yoğun forklift operasyonu yapılan sahalar." data-en="Mineral ores, metal powders, ferroalloys, refractory materials, fertilizers, stone/sand quarries, and sites with intensive forklift operations.">
+              Maden cevherleri, metal tozları, ferroalyaj, refrakter malzemeler, gübre, taş/kum ocakları ve yoğun forklift operasyonu yapılan sahalar.
+            </p>
+          </div>
+        </div>
+
+        <div class="spec-card">
+          <div class="spec-icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <div class="spec-body">
+            <h3 data-tr="Öne Çıkan Özellikler" data-en="Key Features">Öne Çıkan Özellikler</h3>
+            <ul class="spec-features-list">
+              <li data-tr="Kolonlar sürekli açık ve dik durur; forklift bıçakları insan gücüne gerek kalmadan kollara doğrudan girer." data-en="Loops remain permanently open and upright; forklift tines easily enter the loops without requiring manual assistance.">Kolonlar sürekli açık ve dik durur; forklift bıçakları insan gücüne gerek kalmadan kollara doğrudan girer.</li>
+              <li data-tr="Yuvarlak (tubüler) dokuma sayesinde gövdede dikey dikiş yoktur, patlama riski sıfıra yakındır." data-en="Thanks to circular (tubular) weaving, there are no vertical seams, reducing the risk of bursting close to zero.">Yuvarlak (tubüler) dokuma sayesinde gövdede dikey dikiş yoktur, patlama riski sıfıra yakındır.</li>
+              <li data-tr="Hızlı elleçleme ve yükleme gerektiren liman ve şantiye ortamlarında zaman kazandırır." data-en="Saves time in port and construction site environments requiring rapid handling and loading.">Hızlı elleçleme ve yükleme gerektiren liman ve şantiye ortamlarında zaman kazandırır.</li>
+              <li data-tr="Ağır darbelere ve zorlu taşıma koşullarına karşı üst düzey mekanik mukavemet sağlar." data-en="Provides superior mechanical resistance against heavy impacts and harsh handling conditions.">Ağır darbelere ve zorlu taşıma koşullarına karşı üst düzey mekanik mukavemet sağlar.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Quick Call-to-Actions -->
+        <div class="product-quick-actions">
+          <a href="https://wa.me/905313866620?text=Merhaba,%20Çapraz%20Kulplu%20(Cross%20Corner)%20Big%20Bag%20hakkında%20fiyat%20teklifi%20almak%20istiyorum." class="spec-action-btn wa-btn" target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span data-tr="WhatsApp ile Fiyat Al" data-en="Get Quote on WhatsApp">WhatsApp ile Fiyat Al</span>
+          </a>
+          <a href="tel:+902626530825" class="spec-action-btn call-btn">
+            <i class="fa-solid fa-phone"></i>
+            <span data-tr="Hemen Ara" data-en="Call Directly">Hemen Ara</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Direct Quote Request Form Section -->
+  <main class="contact-page-section">
+    <div class="container">
+      <div class="contact-main-grid">
+        <!-- Direct Company Coordinates -->
+        <div class="contact-info-block">
+          <div class="info-row">
+            <i class="fa-solid fa-location-dot"></i>
+            <div class="info-text">
+              <strong data-tr="Adres :" data-en="Address :">Adres :</strong>
+              <p>Cumhuriyet mahallesi çarşı caddesi no 92<br>Körfez / Kocaeli, Türkiye</p>
+            </div>
+          </div>
+
+          <div class="info-row">
+            <i class="fa-solid fa-envelope"></i>
+            <div class="info-text">
+              <strong data-tr="E-posta :" data-en="E-mail :">E-posta :</strong>
+              <a href="mailto:info@erdasgrup.com">info@erdasgrup.com</a>
+            </div>
+          </div>
+
+          <div class="info-row">
+            <i class="fa-solid fa-phone"></i>
+            <div class="info-text">
+              <strong data-tr="Telefon :" data-en="Phone :">Telefon :</strong>
+              <a href="tel:+902626530825">+90 262 653 08 25</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Web3Forms Submission Box -->
+        <form class="contact-form-box" id="contactForm">
+          <input type="hidden" name="access_key" value="889d83af-ef3d-4a01-9166-7c98dbb5849a" />
+          <input type="hidden" name="from_name" value="ERDAŞ Web Sitesi İletişim Formu" />
+          <input type="hidden" name="subject" value="Çapraz Kulplu Big Bag - Yeni Teklif Talebi" />
+          <input type="checkbox" name="botcheck" style="display: none;" />
+
+          <div class="form-two-cols">
+            <input type="text" name="name" class="form-field" placeholder="Adınız *" data-tr-placeholder="Adınız *" data-en-placeholder="Your Name *" required />
+            <input type="tel" name="phone" class="form-field" placeholder="Telefon Numaranız *" data-tr-placeholder="Telefon Numaranız *" data-en-placeholder="Phone Number *" required />
+          </div>
+
+          <div class="form-two-cols">
+            <input type="email" name="email" class="form-field" placeholder="E-posta adresi *" data-tr-placeholder="E-posta adresi *" data-en-placeholder="E-mail address *" required />
+            <input type="text" name="konu" class="form-field" placeholder="Konu *" data-tr-placeholder="Konu *" data-en-placeholder="Subject *" required />
+          </div>
+
+          <div>
+            <textarea name="message" class="form-field" rows="4" placeholder="Mesajınız..." data-tr-placeholder="Mesajınız..." data-en-placeholder="Your Message..." required></textarea>
+          </div>
+
+          <div class="form-submit-row">
+            <button type="submit" class="btn-send-message" id="submitBtn" data-tr="Gönder" data-en="Send">Gönder</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- 5. Footer -->
+  <footer class="main-footer">
+    <div class="container footer-grid">
+      <div>
+        <img src="images/footer-logo.png" alt="ERDAŞ Logo" class="footer-logo" onerror="this.src='https://via.placeholder.com/160x40/060b18/ffffff?text=ERDAS+LOGO'" />
+        <p style="font-size: 14px; line-height: 1.6;" data-tr="Gebze'de dünya standartlarında kaliteli Big Bag çuval üretimi." data-en="World-class quality Big Bag manufacturing in Gebze.">
+          Gebze'de dünya standartlarında kaliteli Big Bag çuval üretimi.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <h4 data-tr="Hızlı Menü" data-en="Quick Menu">Hızlı Menü</h4>
+        <ul>
+          <li><a href="index.html" data-tr="Ana Sayfa" data-en="Home">Ana Sayfa</a></li>
+          <li><a href="hakkimizda.html" data-tr="Hakkımızda" data-en="About Us">Hakkımızda</a></li>
+          <li><a href="index.html#torba-tipleri" data-tr="Torba Çeşitleri" data-en="Bag Types">Torba Çeşitleri</a></li>
+          <li><a href="iletisim.html" data-tr="İletişim & Konum" data-en="Contact & Location">İletişim &amp; Konum</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-info">
+        <h4 data-tr="İletişim" data-en="Contact Info">İletişim</h4>
+        <p style="font-size: 14px; margin-bottom: 6px;"><a href="tel:+902626530825">+90 262 653 08 25</a></p>
+        <p style="font-size: 14px;"><a href="mailto:info@erdasgrup.com">info@erdasgrup.com</a></p>
+      </div>
+    </div>
+
+    <div class="footer-bottom" data-tr="© 2026 Erdaş Big Bag. Tüm Hakları Saklıdır." data-en="© 2026 Erdaş Big Bag. All Rights Reserved.">
+      &copy; 2026 Erdaş Big Bag. Tüm Hakları Saklıdır.
+    </div>
+  </footer>
+
+  <!-- 6. Scripts: Language Switcher, Toast Notification & Asynchronous Submission -->
+  <script>
+    let currentLang = 'tr';
+
+    // Switch and persist selected language
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('preferred_lang', lang);
+      document.documentElement.lang = lang;
+
+      const btnTr = document.getElementById('btn-tr');
+      const btnEn = document.getElementById('btn-en');
+      if (btnTr && btnEn) {
+        btnTr.classList.toggle('active', lang === 'tr');
+        btnEn.classList.toggle('active', lang === 'en');
+      }
+
+      // Translate DOM text content
+      document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+        el.textContent = el.getAttribute('data-' + lang);
+      });
+
+      // Translate input placeholders
+      document.querySelectorAll('[data-' + lang + '-placeholder]').forEach(el => {
+        el.placeholder = el.getAttribute('data-' + lang + '-placeholder');
+      });
+    }
+
+    // Toggle mobile navigation menu
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    const dropdownItem = document.querySelector('.dropdown-item');
+    
+    if (menuBtn && navLinks) {
+      menuBtn.addEventListener('click', () => {
+        menuBtn.classList.toggle('open');
+        navLinks.classList.toggle('active');
+      });
+    }
+
+    if (dropdownToggle && dropdownItem) {
+      dropdownToggle.addEventListener('click', (e) => {
+        if (window.innerWidth <= 992) {
+          e.preventDefault();
+          dropdownItem.classList.toggle('open');
+        }
+      });
+    }
+
+    // Toast notification controller
+    const toast = document.getElementById('toastNotification');
+    const toastIcon = document.getElementById('toastIcon');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastMessage = document.getElementById('toastMessage');
+    const toastCloseBtn = document.getElementById('toastCloseBtn');
+    let toastTimeout = null;
+
+    function showToast(type, title, message) {
+      if (!toast) return;
+      clearTimeout(toastTimeout);
+
+      toast.className = 'toast-popup ' + type;
+      if (toastIcon) {
+        toastIcon.className = type === 'success' ? 'fa-solid fa-check' : 'fa-solid fa-xmark';
+      }
+      if (toastTitle) toastTitle.textContent = title;
+      if (toastMessage) toastMessage.textContent = message;
+
+      toast.classList.add('show');
+      toastTimeout = setTimeout(() => { hideToast(); }, 5000);
+    }
+
+    function hideToast() {
+      if (toast) toast.classList.remove('show');
+    }
+
+    if (toastCloseBtn) toastCloseBtn.addEventListener('click', hideToast);
+
+    // Asynchronous Web3Forms form submission
+    const contactForm = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (contactForm) {
+      contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = currentLang === 'tr' ? 'Gönderiliyor...' : 'Sending...';
+        }
+
+        const formData = new FormData(contactForm);
+        const jsonObject = Object.fromEntries(formData.entries());
+        const jsonString = JSON.stringify(jsonObject);
+
+        fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: jsonString
+        })
+        .then(async (response) => {
+          if (response.status === 200) {
+            const title = currentLang === 'tr' ? 'Mesajınız Gönderildi!' : 'Message Sent!';
+            const msg = currentLang === 'tr' 
+              ? 'Talebiniz başarıyla bize ulaştı. En kısa sürede size dönüş yapacağız.' 
+              : 'Your message has been received. We will get back to you shortly.';
+            showToast('success', title, msg);
+            contactForm.reset();
+          } else {
+            const title = currentLang === 'tr' ? 'Gönderim Başarısız!' : 'Submission Failed!';
+            const msg = currentLang === 'tr' ? 'Bir hata oluştu. Lütfen tekrar deneyin.' : 'An error occurred. Please try again.';
+            showToast('error', title, msg);
+          }
+        })
+        .catch(() => {
+          const title = currentLang === 'tr' ? 'Bağlantı Hatası!' : 'Connection Error!';
+          const msg = currentLang === 'tr' 
+            ? 'İnternet bağlantınızı kontrol edip tekrar deneyin.' 
+            : 'Please check your internet connection and try again.';
+          showToast('error', title, msg);
+        })
+        .finally(() => {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = currentLang === 'tr' ? 'Gönder' : 'Send';
+          }
+        });
+      });
+    }
+
+    // Apply saved language on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedLang = localStorage.getItem('preferred_lang') || 'tr';
+      setLanguage(savedLang);
+    });
+  </script>
+</body>
+</html>

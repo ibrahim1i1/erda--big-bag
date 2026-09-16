@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>İletişim & Fiyat Teklifi | ERDAŞ Big Bag</title>
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ================= Root Variables & Reset ================= */
+    :root {
+      --bg-main: #f8fafc;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --primary-blue: #0284c7;
+      --primary-dark: #0369a1;
+      --dark-navy: #060b18;
+      --accent-green: #25d366;
+      --border-color: #e2e8f0;
+      --white: #ffffff;
+      --success-green: #16a34a;
+      --error-red: #dc2626;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--white);
+      color: var(--text-dark);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      max-width: 1420px;
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ================= 1. Top Bar ================= */
+    .top-bar {
+      background-color: var(--dark-navy);
+      color: #cbd5e1;
+      padding: 15px 0;
+      font-size: 13.5px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .top-bar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .top-info {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .top-info i {
+      color: var(--primary-blue);
+      margin-right: 4px;
+    }
+
+    .lang-switch {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .lang-switch button {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 17px;
+      transition: color 0.2s;
+    }
+
+    .lang-switch button.active,
+    .lang-switch button:hover {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    /* ================= 2. Main Navigation ================= */
+    .main-header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .nav-content {
+      height: 92px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .header-logo-img {
+      height: 70px;
+      width: auto;
+      max-width: 300px;
+      object-fit: contain;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      color: var(--text-dark);
+      font-weight: 600;
+      font-size: 17px;
+      transition: all 0.3s ease;
+      padding: 10px;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--primary-blue);
+      border-bottom: solid 3px var(--primary-blue);
+    }
+
+    .nav-btn {
+      background: var(--dark-navy) !important;
+      color: #ffffff !important;
+      padding: 10px 22px !important;
+      border-radius: 8px;
+      font-weight: 700 !important;
+      border-bottom: none !important;
+      transition: all 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background: var(--primary-blue) !important;
+      transform: translateY(-2px);
+      border-bottom: none !important;
+    }
+
+    .dropdown-item {
+      position: relative;
+    }
+
+    .dropdown-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      font-size: 17px;
+      color: var(--text-dark);
+      cursor: pointer;
+      padding: 10px;
+      transition: color 0.3s ease;
+    }
+
+    .dropdown-toggle:hover {
+      color: var(--primary-blue);
+    }
+
+    .arrow-icon {
+      font-size: 12px;
+      transition: transform 0.25s ease;
+    }
+
+    .submenu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 250px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+      padding: 8px 0;
+      list-style: none;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.25s ease;
+      z-index: 200;
+    }
+
+    .submenu li a {
+      display: block;
+      padding: 10px 20px;
+      font-size: 15px;
+      color: var(--text-dark);
+      border-bottom: none !important;
+    }
+
+    .submenu li a:hover {
+      background: #f0f9ff;
+      color: var(--primary-blue);
+      padding-left: 24px;
+      border-bottom: none !important;
+    }
+
+    .dropdown-item:hover .submenu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown-item:hover .arrow-icon {
+      transform: rotate(180deg);
+    }
+
+    /* ================= 3. Header Banner ================= */
+    .contact-page-header {
+      background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+      padding: 55px 0 35px;
+      border-bottom: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .contact-page-tag {
+      display: inline-block;
+      background-color: #e0f2fe;
+      color: var(--primary-blue);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .contact-page-title {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--dark-navy);
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .contact-page-desc {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    /* ================= 4. Interactive Map Section ================= */
+    .map-section {
+      padding: 35px 0 20px;
+    }
+
+    .map-wrapper-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: 0 8px 24px rgba(6, 11, 24, 0.04);
+      overflow: hidden;
+    }
+
+    .map-header-bar {
+      padding: 10px 14px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 12px;
+    }
+
+    .map-header-bar h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--dark-navy);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .map-header-bar h3 i {
+      color: var(--primary-blue);
+    }
+
+    .map-header-bar span {
+      font-size: 13.5px;
+      color: var(--text-muted);
+    }
+
+    .map-frame-holder {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .map-frame-holder iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* ================= 5. Contact Information & Inquiry Form ================= */
+    .contact-section {
+      padding: 25px 0 85px;
+      flex: 1;
+    }
+
+    .contact-main-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.3fr;
+      gap: 50px;
+      align-items: start;
+    }
+
+    .contact-info-block {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      padding-top: 6px;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .info-row i {
+      font-size: 20px;
+      color: var(--primary-blue);
+      margin-top: 3px;
+      flex-shrink: 0;
+      width: 24px;
+      text-align: center;
+    }
+
+    .info-text strong {
+      display: block;
+      font-size: 15px;
+      color: var(--dark-navy);
+      margin-bottom: 3px;
+      font-weight: 700;
+    }
+
+    .info-text p,
+    .info-text a {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .info-text a:hover {
+      color: var(--primary-blue);
+    }
+
+    .contact-form-box {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      padding: 35px 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+
+    .form-two-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-field {
+      width: 100%;
+      padding: 13px 16px;
+      font-size: 14.5px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 8px;
+      background-color: var(--bg-main);
+      color: var(--text-dark);
+      outline: none;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .form-field:focus {
+      background-color: #ffffff;
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+    }
+
+    .form-field::placeholder {
+      color: #94a3b8;
+    }
+
+    textarea.form-field {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    .form-submit-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 4px;
+    }
+
+    .btn-send-message {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 13px 42px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-send-message:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-send-message:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    /* ================= 6. Toast Notification Popup ================= */
+    .toast-popup {
+      position: fixed;
+      top: 25px;
+      left: 50%;
+      transform: translate(-50%, -40px) scale(0.92);
+      background: #ffffff;
+      min-width: 320px;
+      max-width: 480px;
+      width: 90%;
+      padding: 16px 20px 18px;
+      border-radius: 14px;
+      box-shadow: 0 20px 45px -10px rgba(6, 11, 24, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      z-index: 999999;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      overflow: hidden;
+    }
+
+    .toast-popup.show {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translate(-50%, 0) scale(1);
+    }
+
+    .toast-icon-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .toast-popup.success .toast-icon-wrap {
+      background-color: #dcfce7;
+      color: var(--success-green);
+    }
+    .toast-popup.success {
+      border-left: 4px solid var(--success-green);
+    }
+
+    .toast-popup.error .toast-icon-wrap {
+      background-color: #fee2e2;
+      color: var(--error-red);
+    }
+    .toast-popup.error {
+      border-left: 4px solid var(--error-red);
+    }
+
+    .toast-text {
+      flex: 1;
+    }
+
+    .toast-text h4 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--dark-navy);
+      margin-bottom: 2px;
+    }
+
+    .toast-text p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .toast-close-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0 4px;
+    }
+
+    .toast-progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      width: 100%;
+      background-color: #e2e8f0;
+    }
+
+    .toast-progress-bar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    .toast-popup.success .toast-progress-bar::before {
+      background-color: var(--success-green);
+    }
+
+    .toast-popup.error .toast-progress-bar::before {
+      background-color: var(--error-red);
+    }
+
+    .toast-popup.show .toast-progress-bar::before {
+      animation: progressCountdown 5s linear forwards;
+    }
+
+    @keyframes progressCountdown {
+      from { width: 100%; }
+      to { width: 0%; }
+    }
+
+    /* ================= 7. Footer ================= */
+    .main-footer {
+      background: var(--dark-navy);
+      color: #94a3b8;
+      padding: 60px 0 25px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: auto;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1.3fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-logo-img {
+      height: 44px;
+      width: auto;
+      margin-bottom: 15px;
+    }
+
+    .footer-about {
+      font-size: 14.5px;
+      line-height: 1.6;
+      max-width: 320px;
+    }
+
+    .footer-links h4,
+    .footer-contact h4 {
+      color: #ffffff;
+      font-size: 17px;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: #cbd5e1;
+      font-size: 14.5px;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary-blue);
+    }
+
+    .footer-contact p {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14.5px;
+      color: #cbd5e1;
+    }
+
+    .footer-contact i {
+      color: var(--primary-blue);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 20px;
+      font-size: 13.5px;
+    }
+
+    /* ================= 8. Floating Action Buttons ================= */
+    .call-num-btn {
+      position: fixed;
+      bottom: 25px;
+      left: 25px;
+      z-index: 99999;
+    }
+
+    .whats-button {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 99999;
+    }
+
+    .floating-btn {
+      position: relative;
+      width: 58px;
+      height: 58px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff !important;
+      font-size: 26px;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .floating-btn:hover {
+      transform: scale(1.12);
+    }
+
+    .btn-whatsapp {
+      background-color: #25d366;
+    }
+
+    .btn-call {
+      background-color: #0284c7;
+    }
+
+    .pulse-wave {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      opacity: 0.7;
+      z-index: -1;
+      animation: floatingPulse 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .pulse-whatsapp {
+      background-color: #25d366;
+    }
+
+    .pulse-call {
+      background-color: #0284c7;
+    }
+
+    @keyframes floatingPulse {
+      0% { transform: scale(1); opacity: 0.75; }
+      70% { transform: scale(1.6); opacity: 0; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+
+    /* ================= 9. Responsive Breakpoints ================= */
+    .menu-btn {
+      display: none;
+      width: 32px;
+      height: 24px;
+      position: relative;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 1002;
+    }
+
+    .menu-btn span {
+      display: block;
+      width: 100%;
+      height: 3px;
+      background-color: var(--dark-navy);
+      position: absolute;
+      left: 0;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+
+    .menu-btn span:nth-child(1) { top: 0; }
+    .menu-btn span:nth-child(2) { top: 10px; }
+    .menu-btn span:nth-child(3) { top: 20px; }
+
+    .menu-btn.open span:nth-child(1) { top: 10px; transform: rotate(45deg); }
+    .menu-btn.open span:nth-child(2) { opacity: 0; }
+    .menu-btn.open span:nth-child(3) { top: 10px; transform: rotate(-45deg); }
+
+    .nav-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 998;
+    }
+
+    .nav-backdrop.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    @media (max-width: 992px) {
+      .menu-btn {
+        display: block;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: #ffffff;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 90px 24px 30px;
+        gap: 12px;
+        box-shadow: -8px 0 24px rgba(0, 0, 0, 0.12);
+        transition: right 0.3s ease-in-out;
+        z-index: 999;
+        overflow-y: auto;
+      }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .nav-links li {
+        width: 100%;
+      }
+
+      .nav-links a {
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .nav-btn {
+        display: block;
+        text-align: center;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .submenu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        border: none;
+        padding-left: 15px;
+        display: none;
+      }
+
+      .dropdown-item.active .submenu,
+      .dropdown-item.open .submenu {
+        display: block;
+      }
+
+      .contact-main-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .top-bar {
+        padding: 10px 0;
+      }
+
+      .contact-page-title {
+        font-size: 28px;
+      }
+
+      .map-frame-holder {
+        height: 300px;
+      }
+
+      .form-two-cols {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .form-submit-row {
+        justify-content: stretch;
+      }
+
+      .btn-send-message {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .nav-content {
+        height: 75px;
+      }
+
+      .header-logo-img {
+        height: 48px;
+      }
+
+      .contact-form-box {
+        padding: 24px 18px;
+      }
+
+      .map-header-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+
+      .call-num-btn {
+        bottom: 20px;
+        left: 15px;
+      }
+
+      .whats-button {
+        bottom: 20px;
+        right: 15px;
+      }
+
+      .floating-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. Top Bar -->
+  <aside class="top-bar">
+    <div class="container top-bar-content">
+      <div class="top-info">
+        <span class="badge"><i class="fa-solid fa-envelope"></i><a href="mailto:info@erdasgrup.com">info@erdasgrup.com</a></span>
+      </div>
+      <div class="lang-switch">
+        <i class="fa-solid fa-globe"></i>
+        <button id="btn-tr" class="active" onclick="setLanguage('tr')">TR</button>
+        <span>|</span>
+        <button id="btn-en" onclick="setLanguage('en')">EN</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 2. Main Navigation Header -->
+  <header class="main-header">
+    <div class="container nav-content">
+      
+      <a href="index.html" class="brand-logo">
+        <img src="images/logo.png" alt="Erdaş Big Bag" class="header-logo-img" onerror="this.src='https://via.placeholder.com/220x60/060b18/ffffff?text=ERDAS+LOGO'" />
+      </a>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="menu-btn" id="menuBtn" aria-label="Toggle Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- Navigation Links -->
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" data-tr="Ana Sayfa" data-en="Home">Ana Sayfa</a></li>
+        <li><a href="hakkimizda.html" data-tr="Hakkımızda" data-en="About Us">Hakkımızda</a></li>
+        
+        <!-- Products Dropdown -->
+        <li class="dropdown-item">
+          <div class="dropdown-toggle">
+            <span data-tr="Ürünlerimiz" data-en="Products">Ürünlerimiz</span>
+            <i class="fa-solid fa-chevron-down arrow-icon"></i>
+          </div>
+          <ul class="submenu">
+            <li><a href="standart-4-kulplu-torba.html" data-tr="Standart 4 Kulplu Torba" data-en="Standard 4-Loop Bag">Standart 4 Kulplu Torba</a></li>
+            <li><a href="q-bag.html" data-tr="Q-Bag Torba" data-en="Q-Bag (Baffle Bag)">Q-Bag Torba</a></li>
+            <li><a href="Ic-Naylonlu.html" data-tr="İç Naylonlu Big Bag" data-en="Liner Big Bag">İç Naylonlu Big Bag</a></li>
+            <li><a href="Capraz-Kulplu.html" data-tr="Çapraz Kulplu Big Bag" data-en="Cross-Corner Bag">Çapraz Kulplu Big Bag</a></li>
+            <li><a href="index.html#torba-tipleri" data-tr="Tüm Ürünleri Gör" data-en="View All Products">Tüm Ürünleri Gör</a></li>
+          </ul>
+        </li>
+
+        <li><a href="iletisim.html" class="active" data-tr="İletişim" data-en="Contact">İletişim</a></li>
+        <li><a href="iletisim.html" class="nav-btn" data-tr="Fiyat Teklifi Al" data-en="Get a Quote">Fiyat Teklifi Al</a></li>
+      </ul>
+
+    </div>
+  </header>
+
+  <!-- Mobile Backdrop Overlay -->
+  <div class="nav-backdrop" id="navBackdrop"></div>
+
+  <!-- 3. Header Banner Section -->
+  <section class="contact-page-header">
+    <div class="container">
+      <span class="contact-page-tag" data-tr="Bize Ulaşın" data-en="Contact Us">Bize Ulaşın</span>
+      <h1 class="contact-page-title" data-tr="İletişim & Hızlı Fiyat Teklifi" data-en="Contact & Instant Quote Request">İletişim &amp; Hızlı Fiyat Teklifi</h1>
+      <p class="contact-page-desc" data-tr="Ürün talepleriniz, toptan alımlar ve teknik detaylar için formu doldurabilir ya da doğrudan bizimle iletişime geçebilirsiniz." data-en="For product inquiries, bulk orders, and technical specs, fill out the form or reach out directly to our team.">
+        Ürün talepleriniz, toptan alımlar ve teknik detaylar için formu doldurabilir ya da doğrudan bizimle iletişime geçebilirsiniz.
+      </p>
+    </div>
+  </section>
+
+  <!-- 4. Interactive Map Section -->
+  <section class="map-section">
+    <div class="container">
+      <div class="map-wrapper-card">
+        <div class="map-header-bar">
+          <h3>
+            <i class="fa-solid fa-map-location-dot"></i>
+            <span data-tr="Tesis Konumumuz" data-en="Our Plant Location">Tesis Konumumuz</span>
+          </h3>
+          <span data-tr="Gebze / Kocaeli Sanayi Bölgesi" data-en="Gebze / Kocaeli Industrial Zone">Gebze / Kocaeli Sanayi Bölgesi</span>
+        </div>
+        <div class="map-frame-holder">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3020.056874475854!2d29.649379923725085!3d40.80474397137977!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cb3b0126f9797b%3A0xa70a5b146b17aecc!2zQ3VtaHVyaXlldCwgw4dhcsWfxLEgQ2QuIE5vOjkyLCA0MTgwMCBLw7ZyZmV6L0tvY2FlbGk!5e0!3m2!1sar!2str!4v1789580977428!5m2!1sar!2str" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Contact Info & Submission Form Section -->
+  <main class="contact-section">
+    <div class="container">
+      <div class="contact-main-grid">
+        
+        <!-- Direct Company Contact Cards -->
+        <div class="contact-info-block">
+          
+          <div class="info-row">
+            <i class="fa-solid fa-location-dot"></i>
+            <div class="info-text">
+              <strong data-tr="Fabrika & Ofis Adresi:" data-en="Factory & Office Address:">Fabrika &amp; Ofis Adresi:</strong>
+              <p>Cumhuriyet mahallesi çarşı caddesi no 92<br>Körfez / Kocaeli, Türkiye</p>
+            </div>
+          </div>
+
+          <div class="info-row">
+            <i class="fa-solid fa-phone"></i>
+            <div class="info-text">
+              <strong data-tr="Telefon:" data-en="Phone:">Telefon:</strong>
+              <a href="tel:+902626530825">+90 262 653 08 25</a>
+            </div>
+          </div>
+
+          <div class="info-row">
+            <i class="fa-solid fa-envelope"></i>
+            <div class="info-text">
+              <strong data-tr="E-posta:" data-en="Email:">E-posta:</strong>
+              <a href="mailto:info@erdasgrup.com">info@erdasgrup.com</a>
+            </div>
+          </div>
+
+          <div class="info-row">
+            <i class="fa-solid fa-clock"></i>
+            <div class="info-text">
+              <strong data-tr="Çalışma Saatleri:" data-en="Working Hours:">Çalışma Saatleri:</strong>
+              <p data-tr="Pazartesi - Cumartesi: 08:00 - 18:00" data-en="Monday - Saturday: 08:00 - 18:00">Pazartesi - Cumartesi: 08:00 - 18:00</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Asynchronous Web3Forms Box -->
+        <form class="contact-form-box" id="contactForm">
+          <input type="hidden" name="access_key" value="889d83af-ef3d-4a01-9166-7c98dbb5849a" />
+          <input type="hidden" name="from_name" value="ERDAŞ Web Sitesi İletişim Formu" />
+          <input type="hidden" name="subject" value="Yeni İletişim & Fiyat Teklifi Mesajı (ERDAŞ)" />
+          <input type="checkbox" name="botcheck" style="display: none;" />
+
+          <div class="form-two-cols">
+            <input
+              type="text"
+              name="name"
+              class="form-field"
+              placeholder="Adınız *"
+              data-tr-placeholder="Adınız *"
+              data-en-placeholder="Your Name *"
+              required
+            />
+            <input
+              type="tel"
+              name="phone"
+              class="form-field"
+              placeholder="Telefon Numaranız *"
+              data-tr-placeholder="Telefon Numaranız *"
+              data-en-placeholder="Phone Number *"
+              required
+            />
+          </div>
+
+          <div class="form-two-cols">
+            <input
+              type="email"
+              name="email"
+              class="form-field"
+              placeholder="E-posta Adresiniz *"
+              data-tr-placeholder="E-posta Adresiniz *"
+              data-en-placeholder="Email Address *"
+              required
+            />
+            <input 
+              type="text" 
+              name="konu" 
+              class="form-field" 
+              placeholder="Konu *" 
+              data-tr-placeholder="Konu *" 
+              data-en-placeholder="Subject *" 
+              required 
+            />
+          </div>
+
+          <textarea
+            name="message"
+            class="form-field"
+            rows="5"
+            placeholder="Mesajınız veya Teklif Detayları (Ölçü, Taşıma Kapasitesi, Adet vb.) *"
+            data-tr-placeholder="Mesajınız veya Teklif Detayları (Ölçü, Taşıma Kapasitesi, Adet vb.) *"
+            data-en-placeholder="Your Message or Inquiry Details (Dimensions, Capacity, Quantity etc.) *"
+            required
+          ></textarea>
+
+          <div class="form-submit-row">
+            <button type="submit" class="btn-send-message" id="submitBtn">
+              <span data-tr="Mesajı Gönder" data-en="Send Message">Mesajı Gönder</span>
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Floating Toast Notification Box -->
+  <div class="toast-popup" id="toastNotification">
+    <div class="toast-icon-wrap" id="toastIcon">
+      <i class="fa-solid fa-check"></i>
+    </div>
+    <div class="toast-text">
+      <h4 id="toastTitle">Başarılı!</h4>
+      <p id="toastMessage">Mesajınız başarıyla iletildi.</p>
+    </div>
+    <button class="toast-close-btn" id="toastCloseBtn">&times;</button>
+    <div class="toast-progress-bar"></div>
+  </div>
+
+  <!-- Floating Direct Action Buttons -->
+  <div class="call-num-btn">
+    <a href="tel:+902626530825" class="floating-btn btn-call" aria-label="Hemen Ara">
+      <div class="pulse-wave pulse-call"></div>
+      <i class="fa-solid fa-phone"></i>
+    </a>
+  </div>
+
+  <div class="whats-button">
+    <a href="https://wa.me/905313866620" class="floating-btn btn-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Destek">
+      <div class="pulse-wave pulse-whatsapp"></div>
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+  </div>
+
+  <!-- 6. Footer -->
+  <footer class="main-footer">
+    <div class="container footer-grid">
+      
+      <div class="footer-brand">
+        <a href="index.html" class="brand-logo">
+          <img src="images/footer-logo.png" alt="Erdaş Big Bag" class="footer-logo-img" onerror="this.src='https://via.placeholder.com/180x45/060b18/ffffff?text=ERDAS+LOGO'" />
+        </a>
+        <p class="footer-about" data-tr="Kocaeli Gebze'de dünya standartlarında polipropilen endüstriyel ambalaj ve Big Bag imalatı." data-en="World-class polypropylene industrial packaging and Big Bag manufacturing in Gebze, Kocaeli.">
+          Kocaeli Gebze'de dünya standartlarında polipropilen endüstriyel ambalaj ve Big Bag imalatı.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <h4 data-tr="Hızlı Bağlantılar" data-en="Quick Links">Hızlı Bağlantılar</h4>
+        <ul>
+          <li><a href="index.html" data-tr="Ana Sayfa" data-en="Home">Ana Sayfa</a></li>
+          <li><a href="hakkimizda.html" data-tr="Hakkımızda" data-en="About Us">Hakkımızda</a></li>
+          <li><a href="index.html#torba-tipleri" data-tr="Ürün Çeşitleri" data-en="Products">Ürün Çeşitleri</a></li>
+          <li><a href="iletisim.html" data-tr="Fiyat Teklifi" data-en="Get a Quote">Fiyat Teklifi</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-contact">
+        <h4 data-tr="İletişim Bilgileri" data-en="Contact Information">İletişim Bilgileri</h4>
+        <p><i class="fa-solid fa-location-dot"></i> Cumhuriyet mahallesi çarşı caddesi no 92 KÖRFEZ/KOCAELİ/Turkey</p>
+        <p><i class="fa-solid fa-phone"></i> <a href="tel:+902626530825">+90 262 653 08 25</a></p>
+        <p><i class="fa-solid fa-envelope"></i> <a href="mailto:info@erdasgrup.com">info@erdasgrup.com</a></p>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p data-tr="© 2026 Erdaş Big Bag. Tüm Hakları Saklıdır." data-en="© 2026 Erdaş Big Bag. All Rights Reserved.">&copy; 2026 Erdaş Big Bag. Tüm Hakları Saklıdır.</p>
+    </div>
+  </footer>
+
+  <!-- 7. JavaScript Logic: Handlers, Multi-Language, & Web3Forms Post -->
+  <script>
+    let currentLang = 'tr';
+
+    // Switch and persist selected language
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('preferred_lang', lang);
+      document.documentElement.lang = lang;
+
+      const btnTr = document.getElementById('btn-tr');
+      const btnEn = document.getElementById('btn-en');
+      if (btnTr && btnEn) {
+        btnTr.classList.toggle('active', lang === 'tr');
+        btnEn.classList.toggle('active', lang === 'en');
+      }
+
+      // Translate text elements
+      document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+        el.textContent = el.getAttribute('data-' + lang);
+      });
+
+      // Translate input placeholder attributes
+      document.querySelectorAll('[data-' + lang + '-placeholder]').forEach(el => {
+        el.placeholder = el.getAttribute('data-' + lang + '-placeholder');
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Initialize language preference
+      const savedLang = localStorage.getItem('preferred_lang') || 'tr';
+      setLanguage(savedLang);
+
+      // 2. Mobile navbar hamburger toggling
+      const menuBtn = document.getElementById('menuBtn');
+      const navLinks = document.getElementById('navLinks');
+      const navBackdrop = document.getElementById('navBackdrop');
+      const dropdownItem = document.querySelector('.dropdown-item');
+      const dropdownToggle = document.querySelector('.dropdown-toggle');
+
+      function toggleMenu() {
+        const isOpen = menuBtn.classList.toggle('open');
+        navLinks.classList.toggle('active');
+        navBackdrop.classList.toggle('active');
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+      }
+
+      function closeMenu() {
+        menuBtn.classList.remove('open');
+        navLinks.classList.remove('active');
+        navBackdrop.classList.remove('active');
+        if (dropdownItem) dropdownItem.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      menuBtn.addEventListener('click', toggleMenu);
+      navBackdrop.addEventListener('click', closeMenu);
+
+      if (dropdownToggle) {
+        dropdownToggle.addEventListener('click', (e) => {
+          if (window.innerWidth <= 992) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropdownItem.classList.toggle('active');
+          }
+        });
+      }
+
+      document.querySelectorAll('.nav-links a:not(.dropdown-toggle)').forEach(link => {
+        link.addEventListener('click', () => {
+          if (window.innerWidth <= 992) closeMenu();
+        });
+      });
+
+      // 3. Web3Forms AJAX Form Submission
+      const contactForm = document.getElementById('contactForm');
+      const submitBtn = document.getElementById('submitBtn');
+
+      if (contactForm) {
+        contactForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          submitBtn.disabled = true;
+          const originalBtnText = submitBtn.innerHTML;
+          submitBtn.innerHTML = currentLang === 'tr' ? 'Gönderiliyor...' : 'Sending...';
+
+          const formData = new FormData(contactForm);
+          const object = Object.fromEntries(formData);
+          const json = JSON.stringify(object);
+
+          fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: json
+          })
+          .then(async (response) => {
+            let res = await response.json();
+            if (response.status == 200) {
+              const successTitle = currentLang === 'tr' ? 'Başarılı!' : 'Success!';
+              const successMsg = currentLang === 'tr' ? 'Mesajınız başarıyla iletildi. En kısa sürede dönüş yapacağız.' : 'Your message has been sent successfully. We will get back to you soon.';
+              showToast('success', successTitle, successMsg);
+              contactForm.reset();
+            } else {
+              const errTitle = currentLang === 'tr' ? 'Hata!' : 'Error!';
+              const errMsg = res.message || (currentLang === 'tr' ? 'Bir sorun oluştu. Lütfen tekrar deneyin.' : 'Something went wrong. Please try again.');
+              showToast('error', errTitle, errMsg);
+            }
+          })
+          .catch((error) => {
+            const errTitle = currentLang === 'tr' ? 'Hata!' : 'Error!';
+            const errMsg = currentLang === 'tr' ? 'Bağlantı hatası oluştu.' : 'Connection error occurred.';
+            showToast('error', errTitle, errMsg);
+          })
+          .then(function () {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
+          });
+        });
+      }
+    });
+
+    // 4. Floating Toast Notification Controller
+    let toastTimeout = null;
+    function showToast(type, title, message) {
+      const toast = document.getElementById('toastNotification');
+      const toastIcon = document.getElementById('toastIcon');
+      const toastTitle = document.getElementById('toastTitle');
+      const toastMessage = document.getElementById('toastMessage');
+      const toastCloseBtn = document.getElementById('toastCloseBtn');
+
+      clearTimeout(toastTimeout);
+
+      toast.className = 'toast-popup ' + type;
+      toastTitle.textContent = title;
+      toastMessage.textContent = message;
+
+      if (type === 'success') {
+        toastIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
+      } else {
+        toastIcon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+      }
+
+      toast.classList.add('show');
+
+      toastCloseBtn.onclick = () => {
+        toast.classList.remove('show');
+      };
+
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 5000);
+    }
+  </script>
+
+</body>
+</html>
